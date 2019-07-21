@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% load staticfiles %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>liaochao's Django</title>
+    <script src="{% static 'service-worker.js' %}"></script>
+</head>
+<body>
+<h1>顶部菜单</h1>
+<div>
+     {% block content %}
+     {% endblock %}
+</div>
+</body>
+</html>

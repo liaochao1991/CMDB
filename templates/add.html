@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>主机添加</title>
+</head>
+<body>
+<form class="form-horisontal templatemo-container templatemo-login-form-1 margin-bottom-30" method="post" novalidate role="form">
+    {% csrf_token %}
+    <p id="hostname">主机名：{{ form.hostname }} {{form.errors.hostname.0 }}</p>
+    <p id="cpu">cpu：{{ form.cpu }} {{ form.errors.cpu.0 }}</p>
+    <p id="mem">内存：{{ form.mem }} {{ form.errors.mem.0 }}</p>
+    <p id="speed">带宽：{{ form.speed }} {{ form.errors.speed.0 }}</p>
+    <p id="eth0_network">网卡ip：{{ form.eth0_network }} {{ form.errors.eth0_network.0 }}</p>
+    <p id="state">状态：{{ form.state}} {{ form.errors.state.0 }} </p>
+    <p>{{ form.messages }}</p>
+    <p id="source.name">来源：{{ form.source_id }} {{ form.errors.source_id.0 }}</p>
+    <p id="region.name">区域：{{ form.region_id }} {{ form.errors.region_id.0 }}</p>
+    <input type="submit" value="提交">
+</form>
+</body>
+</html>

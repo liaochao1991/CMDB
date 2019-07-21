@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>主机列表</title>
+</head>
+<body>
+<div>
+    <a href="/api/add.html">添加</a>
+    <a href="/api/apipage">一键添加已知主机</a>
+</div>
+<div class="container">
+    <table class="table table-bordered table-hover" id="table">
+        <thead>
+            <tr>
+                <th>主机id </th>
+                <th>主机名</th>
+                <th>CPU</th>
+                <th>内存/G</th>
+                <th>带宽/M</th>
+                <th>IP</th>
+                <th>来源类型</th>
+                <th>所属区域</th>
+                <th>状态</th>
+                <th>编辑</th>
+                <th>删除</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for host in host_list %}
+                <tr>
+                    <td>{{ host.id }}</td>
+                    <td>{{ host.hostname }}</td>
+                    <td>{{ host.cpu }}</td>
+                    <td>{{ host.mem }}</td>
+                    <td>{{ host.speed }}</td>
+                    <td>{{ host.eth0_network }}</td>
+                    <td>{{ host.source.name }}</td>
+                    <td>{{ host.region.name }}</td>
+                    <td>{{ host.get_state_display }}</td>
+                    <td><a href="/api/update/{{ host.id }}">编辑</a></td>
+                    <td><a href="/api/del?id={{ host.id }}">删除</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div>
+    <ul class="pagination" id="pager">
+        {% if host_list.has_previous %}
+            <li class="previous"><a href="/api/list/?page={{ host_list.previous_page_number }}">上一页</a></li>
+        {% else %}
+            <li class="previous disabled"><a href="#">上一页</a></li>
+        {% endif %}
+         <!-- 遍历页数 -->
+        {% for num in p.page_range %}
+            {% if num == page %}
+                <li class="item active"></a><a href="/api/list/?page={{ num }}">{{ num }}</a></li>
+            {% else %}
+                <li class="item"><a href="/api/list/?page={{ num }}">{{ num }}</a></li>
+            {% endif %}
+        {% endfor %}
+        <!--如果有下一页就拿到下一页的地址-->
+        {% if host_list.has_next %}
+            <li class="next"><a href="/api/list/?page={{ host_list.next_page_number }}">下一页</a></li>
+        {% else %}
+            <li class="next disabled"><a href="#">下一页</a></li>
+        {% endif %}
+    </ul>
+</div>
+
+</body>
+</html>

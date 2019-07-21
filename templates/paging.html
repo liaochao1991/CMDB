@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>分页展示</title>
+</head>
+<body>
+<div class="container">
+    <h4>用户列表展示</h4>
+    <table>
+        <tbody>
+            {% for item in obj_li %}
+                <tr>
+                    <td>{{ item.username }}</td>
+                    <td>{{ item.password }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div>
+    <ul class="pagination" id="pager">
+        <!--如果有上一页就拿上一页-->
+        {% if obj_li.has_previous %}
+            <li class="previous"><a href="/api/page/?page={{ obj_li.previous_page_number }}">上一页</a></li>
+        {% else %}
+            <li class="previous disabled"><a href="#">上一页</a></li>
+        {% endif %}
+         <!-- 遍历页数 -->
+        {% for num in p.page_range %}
+            {% if num == page %}
+                <li class="item active"></a><a href="/api/page/?page={{ num }}">{{ num }}</a></li>
+            {% else %}
+                <li class="item"><a href="/api/page/?page={{ num }}">{{ num }}</a></li>
+            {% endif %}
+        {% endfor %}
+        <!--如果有下一页就拿到下一页的地址-->
+        {% if obj_li.has_next %}
+            <li class="next"><a href="/api/page/?page={{ obj_li.next_page_number }}">下一页</a></li>
+        {% else %}
+            <li class="next disabled"><a href="##">下一页</a></li>
+        {% endif %}
+    </ul>
+</div>
+
+</body>
+</html>

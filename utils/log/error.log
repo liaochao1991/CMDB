@@ -1,0 +1,5 @@
+2019-06-14 16:30:08,584  - ERROR :   BasicPlugin Error:Traceback (most recent call last):
+  File "E:/CMDB/utils/src/plugins/get_message.py", line 36, in linux
+    mess_neizhi = BasePlugin().salt_result()
+AttributeError: 'BasePlugin' object has no attribute 'salt_result'
+
