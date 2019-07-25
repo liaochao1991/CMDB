@@ -73,7 +73,6 @@ class Host(models.Model):    # 最基础的主机表
     #ForeignKey
     #lab = models.ForeignKey(to='Lable',default=1,blank=True, null=True, verbose_name='标签')
     #os = models.ForeignKey(to='Os',default=1,blank=True, null=True, verbose_name='操作系统')  # os+版本号
-    # the_upper = models.ForeignKey(to='Host', blank=True, null=True, verbose_name='宿主机', related_name='upper')
     source = models.ForeignKey(to='Source',default=1,blank=True, null=True, verbose_name='来源IP')
     region = models.ForeignKey(to='Region',default=1,blank=True, null=True, verbose_name='地域')
 
