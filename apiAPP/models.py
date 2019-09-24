@@ -1,42 +1,70 @@
 from django.db import models
 
 # Create your models here.
+
+'''
+    权限设计
+'''
 class Userinfo(models.Model):
-    username = models.CharField(max_length=30,null=True,verbose_name="账户")
-    password = models.CharField(max_length=30,null=True,verbose_name="密码")
-    specialty = models.CharField(max_length=32, null=True,verbose_name="专业")
-    cla_name = models.ManyToManyField(to='Class')
+    '''人员'''
+    username = models.CharField(max_length=32,blank=True,null=True,verbose_name="登录用户名")
+    password = models.CharField(max_length=128,blank=True,null=True,verbose_name="密码")
+    department = models.CharField(max_length=32,blank=True,null=True,verbose_name="所属部门")
+    #一个岗位对应多个用户，一对多，foreignkey 的 放在 对多的表里
+    pos = models.ForeignKey(to='Position',blank=True,null=True,verbose_name="职位",related_name='uspos')
+
     def __str__(self):
+        '''
+          打印request返回的值
+        :return:
+        '''
         return self.username
+    class Meta:
+        '''显示表名用的'''
+        verbose_name_plural = "用户表"
 
-class School(models.Model):
-    #blank表示在django可以为空,verbose_name表示在django中的显示
-    name = models.CharField(max_length=128,null=True,blank=True,verbose_name='名字')
-    #URLField表示在会判断会不会是url,其他形式的也一样其实功能跟上面的一样
-    address = models.URLField(max_length=128,null=True,blank=True,verbose_name='地址')
-    email = models.EmailField(max_length=128,null=True,blank=True,verbose_name='邮箱')
-   # true_false = models.BooleanField(max_length=32,null=True,blank=True,verbose_name='是否')
-    date = models.DateField(verbose_name='时间',null=True)
-    # 对应下面的班级表，一对多，可以理解为一个学校可以有多个班级,1对多
-    cla =models.ForeignKey(to='Class',default=1)
+class Position(models.Model):
+    '''职位'''
+    name = models.CharField(max_length=32, blank=True,null=True, verbose_name="职位名")
+    #一个岗位有多个权限，一个权限也会有多个岗位，多对多
+    #related_name反向查找使用字段
+    auth = models.ManyToManyField(to="Auth",blank=True,null=True,verbose_name="权限",related_name="posau")
     def __str__(self):
         return self.name
-
-class Number(models.Model):
-    #学号可以11对应，1对1
-    num = models.OneToOneField(to='Userinfo',verbose_name='学号')
-    def __str__(self):
-        return self.num
-
-#定义班级
-class Class(models.Model):
-    #id
-    sch=models.ForeignKey(to="School",default=1) #cla_id
-    name = models.CharField(max_length=128, null=True, blank=True, verbose_name='名字')
-    #多个班级多个用户，多对多的关系
-    user = models.ManyToManyField(to='Userinfo')
+    class Meta:
+        verbose_name_plural = "职位表"
+class Auth(models.Model):
+    '''权限'''
+    name = models.CharField(max_length=30,blank=True,null=True, verbose_name="标识")
+    url = models.CharField(max_length=64, blank=True,null=True, verbose_name="路径")
+    #一个组里面有多个权限，一对多
+    group = models.ForeignKey(to="AuthGroup",blank=True,null=True,verbose_name="组",related_name="augro")
+    #自己关联自己，当这个字段为空的时候表示对应的是查询,左侧菜单不变化
+    to_display=models.ForeignKey(to="Auth",blank=True,null=True,verbose_name="显示",related_name="auau")
     def __str__(self):
         return self.name
+    class Meta:
+        verbose_name_plural = "权限表"
+
+class AuthGroup(models.Model):
+    '''权限组'''
+    name = models.CharField(max_length=16, blank=True,null=True, verbose_name="组名")
+    #一个组对应多个菜单，一对多。
+    ti = models.ForeignKey(to="Menu", blank=True,null=True, verbose_name="菜单", related_name="aume")
+
+    def __str__(self):
+        return self.name
+    class Meta:
+        verbose_name_plural = "组表"
+
+class Menu(models.Model):
+    '''菜单'''
+    title = models.CharField(max_length=16, blank=True,null=True, verbose_name="菜单名")
+    def __str__(self):
+        return self.title
+    class Meta:
+        verbose_name_plural = "菜单表"
+
 
 class Disk(models.Model):
     '''磁盘'''

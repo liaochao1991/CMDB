@@ -18,6 +18,7 @@ from django.contrib import admin
 from app import views
 from apiAPP import urls
 from app import urls
+from auth_server import urls
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
    # url(r'^login/$', views.Login.as_view()),
@@ -28,5 +29,6 @@ urlpatterns = [
     #调用redirect
     #(r'dump/$',views.dump),
     url(r'^api/', include('apiAPP.urls')),
+    url(r'^auth/', include('auth_server.urls')),
     url(r'^cmdb/', include('app.urls')),
 ]
